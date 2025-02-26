@@ -28,7 +28,7 @@
 //#include <QMessageBox>
 #include <QTimer>
 #include <QFile>
-#include <QPainter>
+#include <QIcon>
 
 #define QSL(text) QStringLiteral(text)
 
@@ -84,9 +84,24 @@ void CMUDPlugin::realign()
     mWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
-QDialog *CMUDPlugin::configureDialog(){
+QDialog *CMUDPlugin::configureDialog()
+{
     //return new CMUDConfiguration(settings());
-    return new QDialog;
+    QDialog *dialog = new QDialog;
+    dialog->setWindowTitle(QSL("About"));
+    QHBoxLayout *hbox = new QHBoxLayout;
+    QLabel* label1 = new QLabel;
+    QIcon icon = QIcon::fromTheme(QSL("utilities-system-monitor"));
+    label1->setPixmap(icon.pixmap(icon.availableSizes().first()));
+    hbox->addWidget(label1);
+    QLabel *label2= new QLabel;
+    label2->setOpenExternalLinks(true);
+    label2->setText(QSL("<a href='https://github.com/sonichy/lxqt-panel/tree/master/plugin-CMUD'>CMUD 1.0</a><br>CPU usage, Memory usage, Up netspeed, Down netspeed.<br>sonichy@163.com"));
+    hbox->addWidget(label2);
+    dialog->setLayout(hbox);
+    dialog->adjustSize();
+    dialog->setFixedSize(dialog->size());
+    return dialog;
 }
 
 void CMUDPlugin::refresh()
